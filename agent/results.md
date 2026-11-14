@@ -1,10 +1,9 @@
 # Agent eval results (Role 2)
 
-- Generated: 2026-11-08T00:57:56.268Z
-- Model: `mock:policy` (NEMOTRON_PROVIDER=mock), 10 runs per scenario, max 8 steps, 20 s per model call
+- Generated: 2026-11-14T00:45:45.406Z
+- Model: `claude:claude-sonnet-5-5` (NEMOTRON_PROVIDER=claude), 10 runs per scenario, max 8 steps, 60 s per model call
+- Agent mode: `playbook` (playbook: code runs the steps and the model writes the warning and brief; llm: the model picks each tool)
 - Harness: `npm run eval -- --runs 10` drives scripted track timelines (`src/scenarios.ts`) through the real `AgentService`, tools and reducers on an in-memory world.
-
-> **These numbers come from the deterministic mock policy, not Nemotron.** They only prove the harness, tools and service triggers work. Re-run with `NEMOTRON_PROVIDER=brev` (or `hosted`) to get the real agent numbers before quoting anything.
 
 | Check | demo-01 | turns-01 | offon-01 | twin-01 |
 |---|---|---|---|---|

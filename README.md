@@ -77,6 +77,7 @@ cd web && VITE_SPACETIME_URI=http://127.0.0.1:3000 VITE_SPACETIME_DB=ghost-tower
 ```sh
 cd web && npm install && npm run dev                      # web app on simulated data: http://localhost:5173
 cd agent && npm install && NEMOTRON_PROVIDER=mock npx tsx --test test/*.test.ts   # agent tests, offline
+cd agent && NEMOTRON_PROVIDER=claude ANTHROPIC_API_KEY=<key> npm run warm   # run the agent on Claude instead of Nemotron (CLAUDE_MODEL, default claude-sonnet-5-5); one small paid call
 cd agent && NTFY_TOPIC=<long-random-topic> npm run ntfy   # push warnings to a phone through ntfy, next to the agent
 python -X utf8 -m unittest discover -s classifier/tests   # classifier tests (Windows needs -X utf8)
 python classifier/server.py                               # /score on :8001 (rule-based until a model is trained)
@@ -121,5 +122,5 @@ Every 3 s, `recluster` takes the last 120 s of events with fusion >= 0.3. It clu
 | Evidence packet (police and registrar reports) | done; template path tested offline, not yet seen with Nemotron text |
 | Android demo app | builds (`./gradlew assembleDebug`) |
 | Classifier | rule-based until `train.py --final` runs on the real dataset |
-| `agent/results.md` | mock numbers only; re-run with `NEMOTRON_PROVIDER=brev` before quoting |
+| `agent/results.md` | live run on Claude Sonnet 5.5 in the default playbook mode (40/40); not yet re-run on Nemotron or in `AGENT_MODE=llm` |
 | Real 2G and SMS detection on phones | not built: the phone's inputs are simulated |

@@ -61,6 +61,7 @@ const checks = [
   ['Nemotron', async () => {
     const provider = env.NEMOTRON_PROVIDER ?? 'brev';
     if (provider === 'mock') return warn('NEMOTRON_PROVIDER=mock: all text will come from fixed templates');
+    if (provider === 'claude') return isSet(env.ANTHROPIC_API_KEY) ? ok(`Anthropic API key is set (${env.CLAUDE_MODEL ?? 'claude-sonnet-5-5'})`) : fail('ANTHROPIC_API_KEY is not set');
     if (provider === 'hosted') return isSet(env.HOSTED_API_KEY) ? ok('hosted API key is set') : fail('HOSTED_API_KEY is not set');
     if (!isSet(env.BREV_BASE_URL)) return fail('BREV_BASE_URL is not set');
     const res = await request(`${env.BREV_BASE_URL.replace(/\/$/, '')}/models`);

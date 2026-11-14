@@ -9,6 +9,7 @@ import { llmConfig, loadDotEnv } from "../src/config.js";
 import { createModel } from "../src/llm/index.js";
 import { urlHash, KNOWN_DOMAINS } from "../src/knownDomains.js";
 import { runScenario, type ScenarioRun } from "../src/runScenario.js";
+import { agentModeFromEnv } from "../src/service.js";
 import { SCENARIOS } from "../src/scenarios.js";
 
 // Scripted scenarios are straight-line; keep the eval deterministic and off the public OSRM router.
@@ -133,7 +134,8 @@ async function main() {
     "# Agent eval results (Role 2)",
     "",
     `- Generated: ${new Date().toISOString()}`,
-    `- Model: \`${model.name}\` (NEMOTRON_PROVIDER=${provider}), ${N} runs per scenario, max 8 steps, 20 s per model call`,
+    `- Model: \`${model.name}\` (NEMOTRON_PROVIDER=${provider}), ${N} runs per scenario, max 8 steps, ${Math.round(llmConfig().timeoutMs / 1000)} s per model call`,
+    `- Agent mode: \`${agentModeFromEnv()}\` (playbook: code runs the steps and the model writes the warning and brief; llm: the model picks each tool)`,
     `- Harness: \`npm run eval -- --runs ${N}\` drives scripted track timelines (\`src/scenarios.ts\`) through the real \`AgentService\`, tools and reducers on an in-memory world.`,
     provider === "mock"
       ? "\n> **These numbers come from the deterministic mock policy, not Nemotron.** They only prove the harness, tools and service triggers work. Re-run with `NEMOTRON_PROVIDER=brev` (or `hosted`) to get the real agent numbers before quoting anything.\n"
