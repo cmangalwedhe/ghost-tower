@@ -88,6 +88,7 @@ if (want('main')) {
     '- *Error*: per recluster pass (every 3 s) while on air, distance from the associated active track to the true position.',
     '- *Protected before hit*: **uses a stand-in for the agent alerts** (every 30 s per active track, a corridor 600 m either side of a straight 5-min projection). The real number depends on the agent + `predict_route`; re-measure once it runs.',
     '- *Event precision/recall*: an event counts as "predicted" if it ended up on a track that went active; ground truth is whether a blaster caused it.',
+    '- *Real-case replays* (`bangkok-2024`, `toronto-2026`, `london-2025`): reconstructions from public reports. The city, vehicle and (for Bangkok) the ~3 km range are reported; the exact streets, speed and phone density are assumed. Each scenario file lists both under `based_on`. Bangkok shows a known gap: recluster groups reports within 800 m, so a 3 km footprint splits into many tracks and the position is about 850 m off.',
     '',
   );
 }

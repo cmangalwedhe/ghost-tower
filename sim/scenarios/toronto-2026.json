@@ -1,0 +1,58 @@
+{
+  "id": "toronto-2026",
+  "seed": "toronto-2026",
+  "description": "Replay of the Toronto case (Project Lighthouse, 2026): a blaster in a vehicle downtown. Route, speed and range are assumed.",
+  "kind": "attack",
+  "based_on": {
+    "case": "Toronto, Canada, November 2025 to March 2026 (Project Lighthouse)",
+    "reported": [
+      "First flagged in downtown Toronto by a cybersecurity partner in November 2025",
+      "The device was mobile and run from vehicles across the Greater Toronto Area",
+      "Tens of thousands of devices connected over several months",
+      "More than 13 million network disruptions, which could affect 911 access",
+      "Arrests on March 31 and April 21, 2026"
+    ],
+    "assumed": [
+      "The exact streets: Yonge St from Front St to Bloor St",
+      "Speed of 6 m/s (downtown traffic)",
+      "Range of 500 m; no range was reported",
+      "The lure wording and brand; neither was in the reports we read",
+      "An 8-minute slice of several months",
+      "How many phones run the app: the demo's density of about 19 per km2"
+    ],
+    "sources": [
+      "https://www.tps.ca/media-centre/stories/unprecedented-sms-blaster-arrests/",
+      "https://www.cp24.com/local/toronto/2026/04/23/toronto-police-to-provide-update-on-cybercrime-probe/",
+      "https://insidetowers.com/toronto-police-bust-sms-blaster-cybercrime-operation/"
+    ]
+  },
+  "phones": 250,
+  "area_bbox": [
+    43.639,
+    -79.4,
+    43.679,
+    -79.364
+  ],
+  "blasters": [
+    {
+      "route": "routes/toronto_yonge.json",
+      "speed_mps": 6,
+      "range_m": 500,
+      "on_air": [
+        [
+          0,
+          480
+        ]
+      ],
+      "brand": "",
+      "domain": "account-verify-demo.example",
+      "lure_text": "Your account has been placed on hold. Verify your details at https://account-verify-demo.example"
+    }
+  ],
+  "benign": {
+    "handover_rate_per_phone_hr": 6,
+    "dropout_rate_per_phone_hr": 1,
+    "real_toll_texts": 5
+  },
+  "tick_ms": 1000
+}
