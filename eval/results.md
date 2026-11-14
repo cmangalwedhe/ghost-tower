@@ -7,16 +7,19 @@ Regenerate after any change to `spacetime/src/tracking.ts`, `fusion.ts` or the s
 
 | Scenario | Kind | First alert (s) | Usable fix (s) | Err median (m) | Err p90 (m) | Protected before hit (%) | Active tracks per run | False active | Event precision | Event recall | recluster mean (ms) |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| benign-01 | benign | n/a | n/a | n/a | n/a | n/a | 0/0/0 | 0 | n/a | n/a | 1.0 |
-| benign-02 | benign | n/a | n/a | n/a | n/a | n/a | 0/0/0 | 0 | n/a | n/a | 0.7 |
-| border-01 | benign | n/a | n/a | n/a | n/a | n/a | 0/0/0 | 0 | n/a | n/a | 0.5 |
-| demo-01 | attack | 12 | 12 | 264 | 400 | 90 | 1/1/1 | 0 | 1.00 | 1.00 | 0.9 |
-| offon-01 | attack | 12 | 12 | 219 | 331 | 36 | 1/1/1 | 0 | 1.00 | 1.00 | 0.7 |
-| stopgo-01 | attack | 18 | 18 | 146 | 257 | 88 | 1/1/1 | 0 | 1.00 | 1.00 | 1.1 |
-| straight-01 | attack | 12 | 12 | 283 | 377 | 90 | 1/1/1 | 0 | 1.00 | 1.00 | 0.7 |
-| turns-01 | attack | 12 | 12 | 261 | 374 | 84 | 1/1/1 | 0 | 1.00 | 1.00 | 1.1 |
-| twin-01 | attack | 12 | 12 | 248 | 396 | 89 | 2/2/2 | 0 | 1.00 | 1.00 | 1.2 |
-| walker-01 | attack | 9 | 9 | 39 | 61 | 100 | 1/1/1 | 0 | 1.00 | 1.00 | 1.0 |
+| bangkok-2024 | attack | 9 | 12 | 855 | 1343 | 92 | 16/14/16 | 1 | 1.00 | 1.00 | 9.4 |
+| benign-01 | benign | n/a | n/a | n/a | n/a | n/a | 0/0/0 | 0 | n/a | n/a | 0.3 |
+| benign-02 | benign | n/a | n/a | n/a | n/a | n/a | 0/0/0 | 0 | n/a | n/a | 0.4 |
+| border-01 | benign | n/a | n/a | n/a | n/a | n/a | 0/0/0 | 0 | n/a | n/a | 0.3 |
+| demo-01 | attack | 12 | 12 | 264 | 400 | 90 | 1/1/1 | 0 | 1.00 | 1.00 | 0.5 |
+| london-2025 | attack | 12 | 12 | 116 | 203 | 89 | 1/1/1 | 0 | 1.00 | 1.00 | 0.4 |
+| offon-01 | attack | 12 | 12 | 219 | 331 | 36 | 1/1/1 | 0 | 1.00 | 1.00 | 0.4 |
+| stopgo-01 | attack | 18 | 18 | 146 | 257 | 88 | 1/1/1 | 0 | 1.00 | 1.00 | 0.6 |
+| straight-01 | attack | 12 | 12 | 283 | 377 | 90 | 1/1/1 | 0 | 1.00 | 1.00 | 0.6 |
+| toronto-2026 | attack | 12 | 12 | 151 | 237 | 100 | 1/1/1 | 0 | 1.00 | 1.00 | 0.7 |
+| turns-01 | attack | 12 | 12 | 261 | 374 | 84 | 1/1/1 | 0 | 1.00 | 1.00 | 0.8 |
+| twin-01 | attack | 12 | 12 | 248 | 396 | 89 | 2/2/2 | 0 | 1.00 | 1.00 | 1.1 |
+| walker-01 | attack | 9 | 9 | 39 | 61 | 100 | 1/1/1 | 0 | 1.00 | 1.00 | 0.8 |
 
 **False alarms (benign scenarios): 0 active tracks in 450 phone-hours = 0.00 per 1,000 phone-hours.**
 
@@ -26,6 +29,7 @@ How to read it:
 - *Error*: per recluster pass (every 3 s) while on air, distance from the associated active track to the true position.
 - *Protected before hit*: **uses a stand-in for the agent alerts** (every 30 s per active track, a corridor 600 m either side of a straight 5-min projection). The real number depends on the agent + `predict_route`; re-measure once it runs.
 - *Event precision/recall*: an event counts as "predicted" if it ended up on a track that went active; ground truth is whether a blaster caused it.
+- *Real-case replays* (`bangkok-2024`, `toronto-2026`, `london-2025`): reconstructions from public reports. The city, vehicle and (for Bangkok) the ~3 km range are reported; the exact streets, speed and phone density are assumed. Each scenario file lists both under `based_on`. Bangkok shows a known gap: recluster groups reports within 800 m, so a 3 km footprint splits into many tracks and the position is about 850 m off.
 
 ## Fusion ablation (TESTING.md §2c)
 
@@ -59,6 +63,6 @@ demo-01 with more phones in the same area (so density, hits per pass and events 
 
 | Phones | Events in run | recluster p50 (ms) | p95 (ms) | max (ms) |
 |---|---|---|---|---|
-| 300 | 509 | 1.0 | 11.8 | 20.4 |
-| 1,000 | 1822 | 3.2 | 21.1 | 40.1 |
-| 3,000 | 5402 | 10.7 | 30.0 | 218.7 |
+| 300 | 509 | 0.5 | 7.5 | 8.8 |
+| 1,000 | 1822 | 1.8 | 9.5 | 11.5 |
+| 3,000 | 5402 | 6.7 | 15.5 | 18.5 |

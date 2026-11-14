@@ -1,0 +1,56 @@
+{
+  "id": "bangkok-2024",
+  "seed": "bangkok-2024",
+  "description": "Replay of the Bangkok van case (Nov 2024): a 3 km range blaster on Sukhumvit Rd. Route and speed are assumed.",
+  "kind": "attack",
+  "based_on": {
+    "case": "Bangkok, Thailand, November 2024",
+    "reported": [
+      "A van carried the device around Bangkok; secondary reports place it in the Sukhumvit area",
+      "Range of approximately 3 km",
+      "About 100,000 texts an hour, almost 1 million over three days",
+      "Texts impersonated the mobile operator AIS and said reward points were about to expire",
+      "The operator AIS helped police locate the device"
+    ],
+    "assumed": [
+      "The exact streets: Sukhumvit Rd from Nana to Ekkamai",
+      "Speed of 5 m/s (city traffic)",
+      "A 10-minute slice of the three days",
+      "How many phones run the app: the demo's density of about 19 per km2",
+      "That each phone was forced to 2G; the reports do not say"
+    ],
+    "sources": [
+      "https://www.bleepingcomputer.com/news/security/bangkok-busts-sms-blaster-sending-1-million-scam-texts-from-a-van/",
+      "https://cyberinsider.com/thai-police-neutralized-blaster-that-spammed-100000-sms-hour/"
+    ]
+  },
+  "phones": 1650,
+  "area_bbox": [
+    13.69,
+    100.525,
+    13.77,
+    100.616
+  ],
+  "blasters": [
+    {
+      "route": "routes/bangkok_sukhumvit.json",
+      "speed_mps": 5,
+      "range_m": 3000,
+      "on_air": [
+        [
+          0,
+          600
+        ]
+      ],
+      "brand": "AIS",
+      "domain": "ais-points-demo.example",
+      "lure_text": "AIS: your reward points expire soon. Redeem your gift now at https://ais-points-demo.example"
+    }
+  ],
+  "benign": {
+    "handover_rate_per_phone_hr": 6,
+    "dropout_rate_per_phone_hr": 1,
+    "real_toll_texts": 5
+  },
+  "tick_ms": 1000
+}

@@ -10,7 +10,7 @@ Contract: [`INTERFACES.md`](INTERFACES.md) · test plan: [`TESTING.md`](TESTING.
 |---|---|
 | `spacetime/src/` | Module. `schema.ts` + `columns.ts` define the tables, `index.ts` the reducers, `tracking.ts` the recluster math (pure, deterministic), `fusion.ts` §4. |
 | `spacetime/bindings/` | TypeScript client bindings (same shape as `spacetime generate`). |
-| `sim/` | Seeded simulator: `scenarios/*.json` (10 from TESTING.md §1), `routes/*.json` (real OSM roads via OSRM). |
+| `sim/` | Seeded simulator: `scenarios/*.json` (10 from TESTING.md §1, plus 3 replays of real cases: Bangkok 2024, London 2025, Toronto 2026; each lists what is reported and what is assumed under `based_on`), `routes/*.json` (real OSM roads via OSRM). |
 | `eval/` | `run_eval.ts` → `results.md`: detection time, error, protected-before-hit, false alarms, ablation, load test. |
 | `agent/tools/predict_route/` | Route prediction, called by the agent: walks an offline road map, then tries OSRM, then a straight line. |
 | `web/src/patrol/` | Patrol tablet view, mounted at `/patrol`. |

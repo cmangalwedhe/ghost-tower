@@ -1,0 +1,56 @@
+{
+  "id": "london-2025",
+  "seed": "london-2025",
+  "description": "Replay of the London car case (March 2025): a blaster in the boot of an SUV in north London. Route, speed and range are assumed.",
+  "kind": "attack",
+  "based_on": {
+    "case": "London, UK, March 22 to 27, 2025",
+    "reported": [
+      "A black Honda CR-V with the device hidden in the boot",
+      "Driven through Greater London; the driver was stopped in north London while it was running",
+      "Texts impersonated trusted organisations such as government bodies",
+      "Investigated by the card-fraud police unit with the UK mobile operators"
+    ],
+    "assumed": [
+      "The exact streets: Upper St and Holloway Rd from Islington to Holloway",
+      "Speed of 5 m/s (London traffic)",
+      "Range of 500 m; no range was reported",
+      "HMRC as the brand and the refund wording; the police summary only says government bodies",
+      "An 8-minute slice of six days",
+      "How many phones run the app: the demo's density of about 19 per km2"
+    ],
+    "sources": [
+      "https://securityonline.info/chinese-student-jailed-for-smishing-operated-covert-sms-blaster-in-car-for-mass-phishing/",
+      "https://www.reportfraud.police.uk/news/man-jailed-for-role-in-sms-blaster-fraud-operation-following-city-of-london-police-investigation/"
+    ]
+  },
+  "phones": 220,
+  "area_bbox": [
+    51.528,
+    -0.132,
+    51.564,
+    -0.09
+  ],
+  "blasters": [
+    {
+      "route": "routes/london_holloway.json",
+      "speed_mps": 5,
+      "range_m": 500,
+      "on_air": [
+        [
+          0,
+          480
+        ]
+      ],
+      "brand": "HMRC",
+      "domain": "hmrc-refund-demo.example",
+      "lure_text": "HMRC: you are owed a tax refund. Claim it at https://hmrc-refund-demo.example"
+    }
+  ],
+  "benign": {
+    "handover_rate_per_phone_hr": 6,
+    "dropout_rate_per_phone_hr": 1,
+    "real_toll_texts": 5
+  },
+  "tick_ms": 1000
+}

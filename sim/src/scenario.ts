@@ -53,9 +53,21 @@ export interface BenignSpec {
   foreign_cells?: Zone[];
 }
 
+/** For replays of real incidents: what public reports say, what we filled in, and where it came from. */
+export interface BasedOn {
+  case: string;
+  /** details taken from police statements or news reports */
+  reported: string[];
+  /** details the reports do not give, chosen by us (always includes the exact route) */
+  assumed: string[];
+  sources: string[];
+}
+
 export interface Scenario {
   id: string;
   description?: string;
+  /** set on replays of real incidents (bangkok-2024, toronto-2026, london-2025) */
+  based_on?: BasedOn;
   /** "attack" scenarios have blasters; "benign" ones must produce zero active tracks */
   kind: 'attack' | 'benign';
   seed: string;

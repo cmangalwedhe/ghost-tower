@@ -21,7 +21,7 @@ test('same seed = same run; different seed = different run', () => {
 
 test('every scenario loads and its routes exist', () => {
   const ids = listScenarios();
-  assert.equal(ids.length, 10);
+  assert.equal(ids.length, 13);
   for (const id of ids) {
     const s = loadScenario(id);
     for (const b of s.blasters) assert.ok(loadRoute(b.route).points.length > 1, `${id}: ${b.route}`);
@@ -78,4 +78,25 @@ test('url_hash normalizes the link domain', () => {
   assert.equal(urlHash('HTTPS://www.TxTag-Pay-Demo.example:443/pay?id=1'), h);
   assert.match(h, /^[0-9a-f]{64}$/);
   assert.notEqual(urlHash('txtag.org'), h);
+});
+
+test('real-case replays say what is reported and what is assumed, and stay on the main road', () => {
+  const replays = { 'bangkok-2024': 'ถนนสุขุมวิท', 'toronto-2026': 'Yonge Street', 'london-2025': 'Holloway Road' };
+  for (const [id, road] of Object.entries(replays)) {
+    const s = loadScenario(id);
+    assert.ok(s.based_on, `${id}: based_on`);
+    assert.ok(s.based_on.reported.length >= 3 && s.based_on.sources.length >= 1, `${id}: reported facts and sources`);
+    assert.ok(s.based_on.sources.every(u => u.startsWith('https://')), `${id}: sources are links`);
+    assert.ok(s.based_on.assumed.some(a => /exact streets/i.test(a)), `${id}: the route is declared as assumed`);
+    const [b] = s.blasters;
+    const route = loadRoute(b.route);
+    assert.ok(route.roads.includes(road), `${id}: route uses ${road}`);
+    // The blaster must still be driving when the run ends, not parked at the end of a short route.
+    const onAirS = Math.max(...b.on_air.map(w => w[1]));
+    assert.ok(b.speed_mps * onAirS <= route.length_m, `${id}: route is long enough`);
+    // Every route point (plus the blaster's range, up to 3.5 km) is inside the phone area.
+    const [la0, lo0, la1, lo1] = s.area_bbox;
+    for (const [lat, lon] of route.points) assert.ok(lat > la0 && lat < la1 && lon > lo0 && lon < lo1, `${id}: route inside area`);
+  }
+  assert.equal(loadScenario('bangkok-2024').blasters[0].range_m, 3000, 'the reported ~3 km range');
 });

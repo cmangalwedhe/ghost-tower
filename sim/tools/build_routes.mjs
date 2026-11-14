@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Builds sim/routes/*.json from real OpenStreetMap road geometry via the public OSRM router.
 // Run once (needs network); the generated JSON is committed so sims never need the network.
-//   node sim/tools/build_routes.mjs
+//   node sim/tools/build_routes.mjs                 every route
+//   node sim/tools/build_routes.mjs toronto london  only the named routes (leaves the others untouched)
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -30,6 +31,20 @@ const ROUTES = {
     via: [[32.97888, -96.792119, 90], [32.978274, -96.779876, 90], [32.978137, -96.766003, 90], [32.978136, -96.759999, 90],
           [32.978125, -96.749912, 90], [32.978037, -96.739969, 90]],
   },
+  // Real-case replays (sim/scenarios/*-20xx.json). Public reports name the city and area but not
+  // the streets driven, so these are ASSUMED routes on a main road in the reported area.
+  bangkok_sukhumvit: {
+    desc: 'ASSUMED route for the Bangkok 2024 case: Sukhumvit Rd from Nana to Ekkamai',
+    via: [[13.7405, 100.5553, 125], [13.7370, 100.5607, 125], [13.7305, 100.5697, 125], [13.7243, 100.5785, 125], [13.7196, 100.5852, 125]],
+  },
+  toronto_yonge: {
+    desc: 'ASSUMED route for the Toronto 2026 case: Yonge St north from Front St to Bloor St (downtown)',
+    via: [[43.6469, -79.3771], [43.6561, -79.3806], [43.6617, -79.3831], [43.6708, -79.3868]],
+  },
+  london_holloway: {
+    desc: 'ASSUMED route for the London 2025 case: Upper St and Holloway Rd (A1) from Islington to Holloway, north London',
+    via: [[51.5362, -0.1033], [51.5462, -0.1036], [51.5560, -0.1175]],
+  },
   arapaho_west: {
     desc: 'Arapaho Rd westbound, ~1.6 km south of Campbell (twin-01 second blaster)',
     via: [[32.963014, -96.739682, 270], [32.962305, -96.755137, 270], [32.962069, -96.775697, 270]],
@@ -43,10 +58,15 @@ function haversine(a, b) {
   return 2 * R * Math.asin(Math.sqrt(h));
 }
 
+const only = process.argv.slice(2);
+const wanted = (name) => only.length === 0 || only.includes(name);
+
 for (const [name, r] of Object.entries(ROUTES)) {
+  if (!wanted(name)) continue;
   const coords = r.via.map(([lat, lon]) => `${lon},${lat}`).join(';');
-  const bearings = r.via.map(([, , b]) => `${b},45`).join(';');
-  const url = `${OSRM}/route/v1/driving/${coords}?overview=full&geometries=geojson&steps=true&bearings=${bearings}`;
+  const bearings = r.via.map(([, , b]) => (b == null ? '' : `${b},45`)).join(';');
+  const withBearings = r.via.some(([, , b]) => b != null) ? `&bearings=${bearings}` : '';
+  const url = `${OSRM}/route/v1/driving/${coords}?overview=full&geometries=geojson&steps=true${withBearings}`;
   const res = await fetch(url, { headers: { 'User-Agent': 'ghost-tower-sim/0.1' } });
   const j = await res.json();
   if (j.code !== 'Ok') throw new Error(`${name}: OSRM ${j.code} ${j.message ?? ''}`);
@@ -65,6 +85,7 @@ for (const [name, r] of Object.entries(ROUTES)) {
   console.log(`${name}: ${out.length_m} m, ${points.length} pts, roads: ${roads.join(' > ')}`);
 }
 
+if (wanted('walker')) {
 // walker-01: hand-carried device on foot across the UTD campus. Public OSRM only serves the car
 // profile, so this is a hand-placed footpath (straight segments between campus waypoints).
 const walk = [[32.9846, -96.7518], [32.9858, -96.7508], [32.9872, -96.7497], [32.9884, -96.7493], [32.9893, -96.7480]];
@@ -74,3 +95,4 @@ writeFileSync(join(OUT, 'walker.json'), JSON.stringify({
   length_m: Math.round(len), roads: ['UTD campus walkways'], points: walk,
 }, null, 1) + '\n');
 console.log(`walker: ${Math.round(len)} m (manual)`);
+}

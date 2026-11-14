@@ -36,3 +36,29 @@ test('end to end, in process: twin-01 is two tracks, never merged', async () => 
   assert.equal(m.activeTracks, 2);
   assert.equal(m.falseActiveTracks, 0);
 });
+
+test('real-case replays: Toronto and London are caught as one track within 30 s', async () => {
+  for (const id of ['toronto-2026', 'london-2025']) {
+    const m = score(await runLocal(loadScenario(id), { mockAlerts: true }));
+    assert.equal(m.activeTracks, 1, id);
+    assert.equal(m.falseActiveTracks, 0, id);
+    assert.ok(m.timeToFirstAlertS !== null && m.timeToFirstAlertS < 30, `${id}: first alert ${m.timeToFirstAlertS}`);
+    assert.ok(m.errMedianM !== null && m.errMedianM < 300, `${id}: median error ${m.errMedianM}`);
+  }
+});
+
+test('real-case replay: the 3 km range Bangkok blaster is detected within 30 s', async () => {
+  const m = score(await runLocal(loadScenario('bangkok-2024'), { mockAlerts: true }));
+  assert.ok(m.activeTracks >= 1);
+  assert.ok(m.timeToFirstAlertS !== null && m.timeToFirstAlertS < 30, `first alert ${m.timeToFirstAlertS}`);
+  assert.ok(m.eventRecall! > 0.9);
+});
+
+// Known gap, found by this replay: recluster groups reports within 800 m, so a blaster with a 3 km
+// footprint is split into many tracks (14 to 16 in the eval) and located about 850 m off.
+test('real-case replay: the Bangkok blaster is tracked as ONE tower, close to its true position', { todo: 'tracking assumes a range under ~800 m' }, async () => {
+  const m = score(await runLocal(loadScenario('bangkok-2024'), { mockAlerts: true }));
+  assert.equal(m.activeTracks, 1);
+  assert.equal(m.falseActiveTracks, 0);
+  assert.ok(m.errMedianM !== null && m.errMedianM < 400, `median error ${m.errMedianM}`);
+});
