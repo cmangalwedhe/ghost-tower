@@ -12,6 +12,22 @@ export type CreateMessage = (body: Anthropic.Beta.MessageCreateParamsNonStreamin
 
 const MAX_REMEMBERED_TURNS = 500;
 
+/** Token totals for every Claude call in this process. Set CLAUDE_LOG_USAGE=1 to print them at exit. */
+export const claudeUsage = { requests: 0, input: 0, cacheRead: 0, cacheWrite: 0, output: 0 };
+let usageLogHooked = false;
+
+function recordUsage(u: Anthropic.Beta.BetaUsage | undefined): void {
+  claudeUsage.requests++;
+  claudeUsage.input += u?.input_tokens ?? 0;
+  claudeUsage.cacheRead += u?.cache_read_input_tokens ?? 0;
+  claudeUsage.cacheWrite += u?.cache_creation_input_tokens ?? 0;
+  claudeUsage.output += u?.output_tokens ?? 0;
+  if (process.env.CLAUDE_LOG_USAGE === "1" && !usageLogHooked) {
+    usageLogHooked = true;
+    process.on("exit", () => console.error(`claude usage: ${JSON.stringify(claudeUsage)}`));
+  }
+}
+
 /**
  * Claude through the Anthropic API (NEMOTRON_PROVIDER=claude), behind the same ChatModel interface
  * as Nemotron. The rest of the agent speaks OpenAI-style messages; this class translates both ways.
@@ -54,6 +70,7 @@ export class ClaudeClient implements ChatModel {
       betas: ["server-side-fallback-2026-07-01"],
       fallbacks: "default",
     });
+    recordUsage(res.usage);
     if (res.stop_reason === "refusal") {
       throw new Error(`claude declined the request${res.stop_details?.category ? ` (${res.stop_details.category})` : ""}`);
     }
