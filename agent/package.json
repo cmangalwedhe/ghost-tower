@@ -12,6 +12,7 @@
     "replay": "tsx src/cli.ts replay",
     "warm": "tsx src/cli.ts warm",
     "ntfy": "tsx src/ntfy_relay.ts",
+    "photon": "tsx src/photon_relay.ts",
     "eval": "tsx eval/run.ts",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test test/*.test.ts"
@@ -22,6 +23,7 @@
     "typescript": "5.6.3"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "1.8.0"
+    "@anthropic-ai/sdk": "1.8.0",
+    "@photon-ai/api": "0.5.0"
   }
 }

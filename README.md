@@ -79,6 +79,7 @@ cd web && npm install && npm run dev                      # web app on simulated
 cd agent && npm install && NEMOTRON_PROVIDER=mock npx tsx --test test/*.test.ts   # agent tests, offline
 cd agent && NEMOTRON_PROVIDER=claude ANTHROPIC_API_KEY=<key> npm run warm   # run the agent on Claude instead of Nemotron (CLAUDE_MODEL, default claude-sonnet-5-5); one small paid call
 cd agent && NTFY_TOPIC=<long-random-topic> npm run ntfy   # push warnings to a phone through ntfy, next to the agent
+cd agent && npm run photon                               # send warnings by iMessage through Photon to people who texted the agent's number first (PHOTON_API_KEY, PHOTON_PROJECT_ID)
 python -X utf8 -m unittest discover -s classifier/tests   # classifier tests (Windows needs -X utf8)
 python classifier/server.py                               # /score on :8001 (rule-based until a model is trained)
 ```
