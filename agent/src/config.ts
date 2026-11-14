@@ -1,5 +1,5 @@
 // All runtime configuration comes from environment variables (see ../.env.example).
-// Switching Brev <-> hosted Nemotron is the single variable NEMOTRON_PROVIDER.
+// Switching Brev <-> hosted Nemotron <-> Claude is the single variable NEMOTRON_PROVIDER.
 
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
@@ -26,7 +26,7 @@ export function loadDotEnv(path = resolve(process.cwd(), ".env")): void {
   }
 }
 
-export type Provider = "brev" | "hosted" | "mock";
+export type Provider = "brev" | "hosted" | "claude" | "mock";
 
 export interface LlmConfig {
   provider: Provider;
@@ -46,6 +46,17 @@ export function llmConfig(env = process.env): LlmConfig {
       apiKey: env.HOSTED_API_KEY ?? "",
       model: env.HOSTED_MODEL ?? "nvidia/nemotron-3-nano-30b-a3b",
       timeoutMs,
+    };
+  }
+  if (provider === "claude") {
+    return {
+      provider,
+      baseUrl: "",
+      // Empty is fine: the Anthropic SDK then reads ANTHROPIC_API_KEY or an `ant auth login` profile itself.
+      apiKey: env.ANTHROPIC_API_KEY ?? "",
+      model: env.CLAUDE_MODEL ?? "claude-sonnet-5-5",
+      // Claude thinks before it answers, so it gets more time than Nemotron's 20 s unless told otherwise.
+      timeoutMs: Number(env.MODEL_TIMEOUT_MS ?? 60_000),
     };
   }
   if (provider === "mock") {

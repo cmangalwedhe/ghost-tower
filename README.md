@@ -77,6 +77,7 @@ cd web && VITE_SPACETIME_URI=http://127.0.0.1:3000 VITE_SPACETIME_DB=ghost-tower
 ```sh
 cd web && npm install && npm run dev                      # web app on simulated data: http://localhost:5173
 cd agent && npm install && NEMOTRON_PROVIDER=mock npx tsx --test test/*.test.ts   # agent tests, offline
+cd agent && NEMOTRON_PROVIDER=claude ANTHROPIC_API_KEY=<key> npm run warm   # run the agent on Claude instead of Nemotron (CLAUDE_MODEL, default claude-sonnet-5-5); one small paid call
 cd agent && NTFY_TOPIC=<long-random-topic> npm run ntfy   # push warnings to a phone through ntfy, next to the agent
 python -X utf8 -m unittest discover -s classifier/tests   # classifier tests (Windows needs -X utf8)
 python classifier/server.py                               # /score on :8001 (rule-based until a model is trained)
