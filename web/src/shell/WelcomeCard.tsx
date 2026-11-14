@@ -29,8 +29,8 @@ export function WelcomeCard() {
       <h2 id="welcome-title">What you're looking at</h2>
       <p>A simulated replay of Ghost Tower catching a fake cell tower driving through Richardson, TX.</p>
       <ol>
-        <li>A car sends scam texts straight to nearby phones, so carrier filters never see them.</li>
-        <li>Phones report the sudden drop to 2G and the text. Orange dots are those reports.</li>
+        <li>A car carrying a fake cell tower sends scam texts straight to nearby phones, so the phone company never sees them.</li>
+        <li>Phones notice they lost their normal signal and then got the text. Each orange dot is one of those reports.</li>
         <li>Ghost Tower estimates where the car is, predicts its route and warns phones ahead of it.</li>
       </ol>
       <button type="button" className="welcome-close" onClick={dismiss}>Got it</button>

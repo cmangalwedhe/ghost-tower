@@ -4,6 +4,7 @@ import { focusCampaign, focusTrack } from "../spacetime/focusTrack";
 import { phonesWarned, worldClock } from "../spacetime/metrics";
 import { useTables } from "../spacetime/SpacetimeContext";
 import { EvidencePacket } from "./EvidencePacket";
+import { stepStates, type StepState } from "./steps";
 import { shieldSvg } from "./symbols";
 
 const EVENT_WINDOW_MS = 120_000; // matches the recluster window
@@ -42,6 +43,15 @@ function sureness(conf: number): { label: string; level: number } {
 
 type Tone = "safe" | "caution" | "danger" | "quiet";
 
+/** The story in three steps, for someone who has never heard of a fake cell tower. */
+const STEPS = [
+  { name: "Spot", what: "Phones report a scam text" },
+  { name: "Track", what: "The fake tower is located" },
+  { name: "Warn", what: "People ahead get a heads-up" },
+] as const;
+
+const STEP_LABEL: Record<StepState, string> = { idle: "not yet", now: "happening now", done: "done" };
+
 export function IncidentPanel() {
   const { tables } = useTables();
   const now = useNow();
@@ -57,7 +67,7 @@ export function IncidentPanel() {
   let tone: Tone = "safe";
   let title = "No fake towers nearby";
   let body =
-    "Ghost Tower is watching for phones that suddenly drop to 2G and then get a scam text. If that starts happening, it will show up here.";
+    "Ghost Tower is watching for phones that suddenly lose their normal signal and then get a scam text. If that starts happening, it shows up here.";
 
   if (track?.status === "active") {
     tone = "danger";
@@ -79,25 +89,40 @@ export function IncidentPanel() {
 
   const sure = track ? sureness(track.confidence) : undefined;
   const evidence = track ? tables.case_report.filter((r) => r.track_id === track.id) : [];
+  const steps = stepStates(track?.status, warned);
 
   return (
     <section className={`status status-${tone}`} aria-labelledby="status-title">
-      <div className="status-hero">
-        <span className="status-shield" dangerouslySetInnerHTML={{ __html: shieldSvg(tone, 38) }} />
-        <div>
-          {tone === "danger" && <span className="tag tag-danger">Scam likely</span>}
-          <h1 id="status-title" className="status-title">{title}</h1>
+      <div className="status-banner">
+        <div className="status-hero">
+          <span className="status-shield" dangerouslySetInnerHTML={{ __html: shieldSvg(tone, 40) }} />
+          <div>
+            {tone === "danger" && <span className="tag tag-danger">Scam likely</span>}
+            <h1 id="status-title" className="status-title">{title}</h1>
+          </div>
         </div>
+        <p className="status-body">{body}</p>
       </div>
-      <p className="status-body">{body}</p>
+
+      <ol className="steps" aria-label="How Ghost Tower catches a fake tower">
+        {STEPS.map((st, i) => (
+          <li key={st.name} className={`step step-${steps[i]}`}>
+            <span className="step-n">{steps[i] === "done" ? "✓ " : ""}STEP {i + 1}</span>
+            <span className="step-name">{st.name}</span>
+            <span className="step-what">{st.what}</span>
+            <span className="sr-only"> ({STEP_LABEL[steps[i]]})</span>
+          </li>
+        ))}
+      </ol>
+
+      {(warned > 0 || tone === "danger") && (
+        <p className="headline-num" title="Warned phones are told not to tap links in these texts.">
+          <strong>{warned.toLocaleString()}</strong>
+          <span>{warned === 1 ? "phone warned" : "phones warned"} along the fake tower's route</span>
+        </p>
+      )}
 
       <dl className="facts">
-        {(warned > 0 || tone === "danger") && (
-          <div title="Warned phones are told not to tap links in these texts.">
-            <dt>{warned === 1 ? "Phone warned" : "Phones warned"} on its route</dt>
-            <dd className="fact-num">{warned.toLocaleString()}</dd>
-          </div>
-        )}
         {sure && (
           <div>
             <dt>How sure we are</dt>

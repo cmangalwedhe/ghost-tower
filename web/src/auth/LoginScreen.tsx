@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { towerMark } from "../shell/symbols";
+import { towerArt } from "../shell/symbols";
 import { useAuth } from "./AuthContext";
 
 export function LoginScreen() {
@@ -16,18 +16,21 @@ export function LoginScreen() {
   return (
     <div className="login">
       <aside className="login-brand">
-        <span className="login-mark" dangerouslySetInnerHTML={{ __html: towerMark(104) }} />
-        <div className="login-brand-mid">
-          <h1 className="login-word">Ghost Tower</h1>
-          <p className="login-kicker">Fake base-station detection network</p>
+        <div>
+          <p className="login-event">HackUTD 2026 · Zero Day</p>
+          <span className="login-mark" dangerouslySetInnerHTML={{ __html: towerArt(150) }} />
         </div>
-        <p className="login-foot">Crowd-sourced alerts from phones in the field, scored and mapped in one console.</p>
+        <div className="login-brand-mid">
+          <h1 className="login-word">Ghost <b>Tower</b></h1>
+          <p className="login-kicker">Hunting fake cell towers from the phones they attack.</p>
+        </div>
+        <p className="login-foot">Scammers drive fake cell towers around to text people directly. Ghost Tower finds them, follows them and warns the phones ahead.</p>
       </aside>
 
       <main className="login-panel">
         <form className="login-form" onSubmit={onSubmit}>
           <h2 className="login-h2">Sign in</h2>
-          <p className="login-lead">Operator access to the detection console.</p>
+          <p className="login-lead">Watch the live map and see a fake tower get caught.</p>
 
           {error && (
             <p className="login-error" role="alert">
@@ -67,7 +70,7 @@ export function LoginScreen() {
             Sign in
           </button>
 
-          <p className="login-fine">Authorized operators only.</p>
+          <p className="login-fine">Demo access for the team and judges.</p>
         </form>
       </main>
     </div>

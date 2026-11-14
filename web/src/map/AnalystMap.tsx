@@ -26,9 +26,9 @@ const interceptIcon = L.divIcon({
   iconAnchor: [19, 19],
 });
 
-const ALERT_ZONE = "#c99400";
+const ALERT_ZONE = "#f2b705";
 const ALERT_FILL = "#f2b705";
-const EVENT = "#f08a24";
+const EVENT = "#ff9a3d";
 /** The physical phone running the Android app (same magenta as the app). */
 const PHONE = "#e20074";
 /** Where the demo phone sits: the Android app's fixed demo spot, rounded the way its reports are. */
@@ -142,19 +142,19 @@ export function AnalystMap() {
       if (!activeIds.has(p.track_id)) continue; // predictions outlive their track in the database
       const path = parseLatLonList(p.path_json);
       if (path.length > 1) {
-        // White casing under a blue dashed core so the path reads on the grey basemap and on projectors.
-        L.polyline(path, { color: "#ffffff", weight: 9, opacity: 0.95 }).addTo(layer);
-        L.polyline(path, { color: "#1257c7", weight: 4, dashArray: "10 8" }).addTo(layer);
+        // Dark casing under a bright blue dashed core so the path reads on the night basemap and on projectors.
+        L.polyline(path, { color: "#07040f", weight: 9, opacity: 0.9 }).addTo(layer);
+        L.polyline(path, { color: "#5aa2ff", weight: 4, dashArray: "10 8" }).addTo(layer);
       }
       L.marker([p.intercept_lat, p.intercept_lon], { icon: interceptIcon })
         .bindTooltip("Suggested place to intercept it")
         .addTo(layer);
     }
 
-    // Grey dots: simulated phones (mock source only; there is no phone table).
+    // Violet-grey dots: simulated phones (mock source only; there is no phone table).
     for (const ph of tables.mock_phones) {
       L.circleMarker([ph.lat, ph.lon], {
-        radius: 3.5, stroke: false, fillColor: "#9aa4b2", fillOpacity: 0.7,
+        radius: 3.5, stroke: false, fillColor: "#8f83bd", fillOpacity: 0.75,
       }).addTo(layer);
     }
 
@@ -183,7 +183,7 @@ export function AnalystMap() {
     // tower and the warning zone approach it. It turns into the solid dot below when the report arrives.
     if (mine.length === 0) {
       L.circleMarker(DEMO_PHONE, {
-        radius: 9, color: PHONE, weight: 3, dashArray: "3 4", fillColor: "#ffffff", fillOpacity: 0.85,
+        radius: 9, color: "#ff3da8", weight: 3, dashArray: "3 4", fillColor: "#ffffff", fillOpacity: 0.9,
       })
         .bindTooltip("Demo phone (Coit Rd), waiting for a fake tower")
         .addTo(layer);
