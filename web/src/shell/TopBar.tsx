@@ -23,18 +23,18 @@ export function TopBar() {
   return (
     <header className="topbar">
       <NavLink to="/" className="topbar-brand" aria-label="Ghost Tower home">
-        <span className="topbar-mark" dangerouslySetInnerHTML={{ __html: towerMark(26) }} />
-        <span className="topbar-word">Ghost Tower</span>
+        <span className="topbar-mark" dangerouslySetInnerHTML={{ __html: towerMark(24) }} />
+        <span className="topbar-word">Ghost <b>Tower</b></span>
       </NavLink>
 
       <nav className="topbar-nav" aria-label="Views">
-        <NavLink to="/" end>Overview</NavLink>
-        <NavLink to="/patrol">Patrol view</NavLink>
+        <NavLink to="/" end><span>Live map</span></NavLink>
+        <NavLink to="/patrol"><span>Patrol view</span></NavLink>
       </nav>
 
       <div className="topbar-right">
         {/* Always on: the fake tower and most phones are simulated, whatever the data source. */}
-        <span className="topbar-chip" title="The fake tower and most phones in this demo are simulated">Simulated data</span>
+        <span className="topbar-chip" title="The fake tower and most phones in this demo are simulated">Simulated demo</span>
         {debug && <span className="topbar-chip">Answer key shown</span>}
         <span className={`feed feed-${status}`} role="status">
           <i aria-hidden />

@@ -3,7 +3,7 @@
 // a blue ring with a crosshair for the friendly intercept point.
 
 export const HOSTILE = "#e5383b";
-export const FRIENDLY = "#4a90f0";
+export const FRIENDLY = "#5aa2ff";
 
 export function hostileSvg(size: number): string {
   return `<svg viewBox="0 0 32 32" width="${size}" height="${size}" aria-hidden="true">
@@ -30,6 +30,17 @@ export function towerMark(size: number): string {
     <path d="M14 11 9 25M14 11l5 14M10.6 20h6.8"/>
     <path d="M9.2 6.2a6.5 6.5 0 0 0 0 9.2M18.8 6.2a6.5 6.5 0 0 1 0 9.2"/>
     <path d="M4 25 24 3"/>
+  </svg>`;
+}
+
+/** The cover illustration: a mast with magenta signal arcs. Used on the sign-in screen. */
+export function towerArt(size: number): string {
+  return `<svg viewBox="100 -20 360 510" width="${size}" height="${Math.round(size * 510 / 360)}" aria-hidden="true" fill="none" stroke-linecap="round">
+    <path d="M280 120 220 470M280 120l60 350M240 360h80M252 290h56M264 220h32M232 420h96" stroke="#dbc4ff" stroke-width="7"/>
+    <circle cx="280" cy="112" r="15" fill="#e20074"/>
+    <path d="M226 66a76 76 0 0 0 0 92M334 66a76 76 0 0 1 0 92" stroke="#e20074" stroke-width="8"/>
+    <path d="M190 30a126 126 0 0 0 0 164M370 30a126 126 0 0 1 0 164" stroke="#e20074" stroke-width="7" opacity=".65"/>
+    <path d="M152-6a176 176 0 0 0 0 236M408-6a176 176 0 0 1 0 236" stroke="#e20074" stroke-width="6" opacity=".35"/>
   </svg>`;
 }
 

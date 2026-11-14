@@ -53,7 +53,7 @@ export function EvidencePacket({ reports }: { reports: CaseReport[] }) {
               <pre>{r.text}</pre>
               <p className="packet-source">
                 {r.generated
-                  ? "Written by Nemotron from the database's facts. Review before sending."
+                  ? "Written by the AI agent from the database's facts. Review before sending."
                   : "Fixed template filled in from the database's facts (no model text was used)."}
               </p>
             </article>

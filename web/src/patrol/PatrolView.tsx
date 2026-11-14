@@ -18,7 +18,7 @@ const UTD: [number, number] = [32.9857, -96.7502];
 
 const interceptIcon = L.divIcon({
   className: 'sym',
-  html: interceptSvg(60, '#1257c7'),
+  html: interceptSvg(60, '#5aa2ff'),
   iconSize: [60, 60],
   iconAnchor: [30, 30],
 });

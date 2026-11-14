@@ -1,21 +1,21 @@
-/* Patrol tablet. Used in a car in daylight: white bars, grey map, near-black type, the same
-   carrier magenta rule as the console. Touch targets >= 56 px. */
+/* Patrol tablet. Same Zero Day night look as the console: dark bars, night map, bright type and
+   the carrier magenta for the countdown. Touch targets >= 56 px. */
 .patrol {
-  --patrol-bg: #f1f2f4;
-  --patrol-fg: #101317;
-  --patrol-muted: #677180;
-  --patrol-rule: #e2e5e9;
-  --patrol-bar: #ffffff;
-  --patrol-eta: #101317;
-  --patrol-route: #1257c7;
-  --patrol-hostile: #d42a3a;
+  --patrol-bg: #07040f;
+  --patrol-fg: #f4f2ff;
+  --patrol-muted: #a094c8;
+  --patrol-rule: #2c1f52;
+  --patrol-bar: #110926;
+  --patrol-eta: #ff3da8;
+  --patrol-route: #5aa2ff;
+  --patrol-hostile: #e5383b;
   position: fixed;
   inset: 0;
   display: grid;
   grid-template-rows: auto auto 1fr auto;
   background: var(--patrol-bg);
   color: var(--patrol-fg);
-  font: 500 20px/1.3 "Barlow", "Segoe UI", system-ui, sans-serif;
+  font: 500 20px/1.3 "DM Sans", "Segoe UI", system-ui, sans-serif;
 }
 
 .patrol-status {
@@ -26,8 +26,7 @@
   padding: 14px 24px;
   background: var(--patrol-bar);
   color: var(--patrol-fg);
-  font: 700 clamp(21px, 2.8vw, 30px)/1.2 "Barlow", "Segoe UI", sans-serif;
-  letter-spacing: -.01em;
+  font: 700 clamp(21px, 2.8vw, 30px)/1.2 "Chakra Petch", "Segoe UI", sans-serif;
   border-bottom: 1px solid var(--patrol-rule);
 }
 .patrol-dot {
@@ -35,7 +34,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #9aa4b2;
+  background: #6a5d99;
 }
 .patrol-dot.live {
   background: var(--patrol-hostile);
@@ -48,11 +47,10 @@
 .patrol-map {
   width: 100%;
   height: 100%;
-  background: #dfe4ea;
+  background: #0d0920;
 }
-/* Desaturate the basemap so the route and target own the colour. */
-.patrol-map .leaflet-tile-pane { filter: grayscale(0.85) contrast(1.05); }
-.patrol-route-casing { stroke: #fff; stroke-linecap: square; stroke-opacity: 0.9; }
+/* The night basemap filter is shared with the console map (styles.css). */
+.patrol-route-casing { stroke: #07040f; stroke-linecap: square; stroke-opacity: 0.9; }
 .patrol-route { stroke: var(--patrol-route); stroke-linecap: square; stroke-dasharray: 14 10; }
 .patrol-hostile::before { border-width: 3px; }
 
@@ -62,7 +60,7 @@
   align-items: center;
   gap: 16px 36px;
   padding: 16px 24px 18px;
-  background: #fff;
+  background: var(--patrol-bar);
   border-top: 1px solid var(--patrol-rule);
 }
 .patrol-eta { padding-right: 36px; border-right: 1px solid var(--patrol-rule); }
@@ -71,12 +69,12 @@
   font-size: 17px;
 }
 .patrol-eta-value {
-  font: 700 clamp(52px, 8vw, 84px)/1 "Barlow Condensed", "Arial Narrow", sans-serif;
+  font: 700 clamp(52px, 8vw, 84px)/1 "Chakra Petch", "Arial Narrow", sans-serif;
   font-variant-numeric: tabular-nums;
   color: var(--patrol-eta);
 }
 .patrol-big {
-  font: 700 28px/1.15 "Barlow", "Segoe UI", sans-serif;
+  font: 700 28px/1.15 "Chakra Petch", "Segoe UI", sans-serif;
 }
 .patrol-sub { margin-top: 2px; color: var(--patrol-muted); }
 .patrol-target-info {
@@ -92,17 +90,18 @@
   min-width: 72px;
   min-height: 56px;
   padding: 0 20px;
-  border: 2px solid var(--patrol-fg);
+  border: 2px solid #45357a;
   border-radius: 999px;
-  background: #fff;
+  background: #1a1036;
   color: var(--patrol-fg);
-  font: 600 20px "Barlow", "Segoe UI", sans-serif;
+  font: 600 20px "DM Sans", "Segoe UI", sans-serif;
   cursor: pointer;
   touch-action: manipulation;
 }
-.patrol-btn:active { background: var(--patrol-bg); }
+.patrol-btn:active { background: #241848; }
 .patrol-btn.on {
-  background: var(--patrol-fg);
+  background: #e20074;
+  border-color: #e20074;
   color: #fff;
 }
 .patrol-recenter {

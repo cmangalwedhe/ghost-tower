@@ -18,8 +18,8 @@
   --gt-active: #e5383b;
   --gt-candidate: #f2b705;
   --gt-dormant: #8396ae;
-  --gt-font: "Barlow", "Segoe UI", system-ui, sans-serif;
-  --gt-cond: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --gt-font: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  --gt-cond: "Chakra Petch", "Arial Narrow", sans-serif;
   --gt-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
 
   position: relative;
