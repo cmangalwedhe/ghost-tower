@@ -122,5 +122,5 @@ Every 3 s, `recluster` takes the last 120 s of events with fusion >= 0.3. It clu
 | Evidence packet (police and registrar reports) | done; template path tested offline, not yet seen with Nemotron text |
 | Android demo app | builds (`./gradlew assembleDebug`) |
 | Classifier | rule-based until `train.py --final` runs on the real dataset |
-| `agent/results.md` | mock numbers only; re-run with `NEMOTRON_PROVIDER=brev` before quoting |
+| `agent/results.md` | live run on Claude Sonnet 5.5 in the default playbook mode (40/40); not yet re-run on Nemotron or in `AGENT_MODE=llm` |
 | Real 2G and SMS detection on phones | not built: the phone's inputs are simulated |
